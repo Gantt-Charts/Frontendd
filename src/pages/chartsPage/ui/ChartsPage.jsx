@@ -9,17 +9,17 @@ import axios from "axios";
 const chartCards = [
 	{
 		id: "1",
-		name: "Название диаграммы",
+		name: "Диаграмма судьбы",
 		description: "Описание",
 	},
 	{
 		id: "2",
-		name: "Название диаграммы",
+		name: "Диаграмма друзей",
 		description: "Описание",
 	},
 	{
 		id: "3",
-		name: "Название диаграммы",
+		name: "Диаграмма учебы",
 		description: "Описание",
 	},
 	{
@@ -63,7 +63,7 @@ export const ChartsPage = () => {
 
 			<div className={styles.chartsList}>
 				{chartCards.map((chartCard) => (
-					<AppLink key={chartCard.id} href={`/Frontend/charts/${chartCard.id}`}>
+					<AppLink key={chartCard.id} href={`/charts/${chartCard.id}`}>
 						<ChartCard title={chartCard.name} description={chartCard.description} />
 					</AppLink>
 				))}

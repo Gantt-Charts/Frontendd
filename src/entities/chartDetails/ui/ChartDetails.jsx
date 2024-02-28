@@ -240,7 +240,7 @@ export const ChartDetails = ({ id }) => {
 	return (
 		<div className={styles.chartDetails}>
 			<h3 className={styles.title}>{chart.title}</h3>
-			<Gantt tasks={tasks} onDateChange={() => {}} onProgressChange={() => {}} />
+			<Gantt tasks={chart.task} onDateChange={() => {}} onProgressChange={() => {}} />
 		</div>
 	);
 };

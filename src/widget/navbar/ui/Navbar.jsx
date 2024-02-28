@@ -8,11 +8,11 @@ import { LoginModal } from "@/features/loginModal";
 const links = [
 	{
 		value: "Главная",
-		href: "/Frontend",
+		href: "/",
 	},
 	{
 		value: "Диаграммы",
-		href: "/Frontend/charts",
+		href: "/charts",
 	},
 ];
 

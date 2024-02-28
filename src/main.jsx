@@ -5,7 +5,7 @@ import App from "./app/App";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<BrowserRouter basename="/Frontend/">
+		<BrowserRouter basename="/Frontendd/">
 			<App />
 		</BrowserRouter>
 	</React.StrictMode>
