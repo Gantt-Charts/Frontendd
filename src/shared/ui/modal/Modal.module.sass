@@ -1,0 +1,22 @@
+.modal
+	position: fixed
+	display: flex
+	justify-content: center
+	align-items: center
+	inset: 0
+	opacity: 0
+	pointer-events: none
+	transition: opacity 0.2s
+
+	&.opened
+		pointer-events: auto
+		opacity: 1
+
+	&.isClosing
+		opacity: 0
+
+	.content
+		padding: 30px
+		border-radius: 12px
+		background-color: var(--neutral200)
+		z-index: var(--modal-z-index)
