@@ -1,0 +1,44 @@
+.progress
+  position: relative
+  background-color: var(--neutral500)
+  height: 1px
+  margin-top: 15px
+
+  .min
+    position: absolute
+    top: 0
+    left: 0
+    transform: translateY(-50%)
+    background-color: var(--neutral500)
+    width: 2px
+    height: 15px
+
+  .max
+    position: absolute
+    top: 0
+    right: 0
+    transform: translateY(-50%)
+    background-color: var(--neutral500)
+    width: 2px
+    height: 15px
+
+  .min,.max
+    .minMaxValue
+      position: absolute
+      left: 50%
+      bottom: 100%
+      padding-bottom: 5px
+      transform: translateX(-50%)
+
+  .circle
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    height: 20px
+    width: 40px
+    text-align: center
+    color: var(--neutral200)
+    background-color: var(--primary100)
+    border: 1px solid var(--neutral500)
+    cursor: pointer
+    z-index: 100

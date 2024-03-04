@@ -1,0 +1,45 @@
+.listbox
+  position: relative
+  width: max-content
+
+  .trigger
+    display: flex
+    justify-content: space-between
+    align-items: center
+    gap: 20px
+    padding: 10px 15px
+    background-color: #fff
+    border: 1px solid var(--neutral200)
+    cursor: pointer
+    width: 100%
+
+    .title
+      font: var(--font-text)
+      color: var(--neutral500)
+
+  .items
+    position: absolute
+    left: 0
+    right: 0
+    background-color: #fff
+    border: 1px solid var(--neutral200)
+    z-index: 1
+
+    .item
+      width: 100%
+      padding: 10px 15px
+      text-align: left
+      font: var(--font-text)
+      background: none
+      border: none
+      cursor: pointer
+
+      &:hover
+        background-color: var(--neutral100)
+
+  &.isOpen
+    .trigger
+      border: 1px solid var(--neutral500)
+
+      .icon
+        transform: rotateZ(180deg)

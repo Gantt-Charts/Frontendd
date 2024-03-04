@@ -5,7 +5,7 @@ import { Modal } from "@/shared/ui/modal/Modal";
 import cls from "classnames";
 import styles from "./AddChartModal.module.sass";
 
-export const AddChartModal = ({ isOpen, onClose, className, charts }) => {
+export const AddChartModal = ({ isOpen, onClose, className, onChange }) => {
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 
@@ -18,11 +18,7 @@ export const AddChartModal = ({ isOpen, onClose, className, charts }) => {
 	};
 
 	const onAddClick = () => {
-		charts.push({
-			id: charts.length + 1,
-			title: name,
-			description: description,
-		});
+		onChange({ name, description });
 		onClose();
 	};
 
