@@ -1,29 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import { $api } from "@/shared/api/api";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { getRouteChartDetails } from "@/shared/const/routes";
 import { Button } from "@/shared/ui/button/Button";
 import { AppLink } from "@/shared/ui/appLink/AppLink";
 import { ChartCard } from "@/entities/chartCard";
 import { AddChartModal } from "@/features/addChartModal";
 import { Page } from "@/widget/page";
-import styles from "./ChartsPage.module.sass";
 import { AuthDataContext } from "@/app/providers/AuthProvider";
+import { addCharts, getCharts } from "../model/services/charts";
+import styles from "./ChartsPage.module.sass";
 
 export const ChartsPage = () => {
-	const [data, setData] = useState([]);
+	const [charts, setCharts] = useState([]);
 	const [isChartModal, setIsChartModal] = useState(false);
 	const { authData } = useContext(AuthDataContext);
-
-	useEffect(() => {
-		$api
-			.get(`/projects/${authData}/`)
-			.then((res) => {
-				return setData(res.data);
-			})
-			.catch((e) => {
-				console.log(e);
-			});
-	}, [authData]);
 
 	const onClose = () => {
 		setIsChartModal(false);
@@ -33,11 +22,26 @@ export const ChartsPage = () => {
 		setIsChartModal(true);
 	};
 
-	const onChange = (value) => {
-		$api.post(`$/projects/${authData}/`, value).then((res) => {
-			setData((prevData) => [...prevData, res.data]);
-		});
-	};
+	const onAddCharts = useCallback(
+		async (value) => {
+			const data = await addCharts({ authData, value });
+
+			setCharts((prevData) => [...prevData, data]);
+		},
+		[authData]
+	);
+
+	useEffect(() => {
+		const getData = async () => {
+			const data = await getCharts({ authData });
+
+			if (!data) return;
+
+			setCharts(data);
+		};
+
+		getData();
+	}, [authData]);
 
 	return (
 		<Page className={styles.chartsPage}>
@@ -49,14 +53,14 @@ export const ChartsPage = () => {
 			</div>
 
 			<div className={styles.chartsList}>
-				{data.map((chartCard) => (
+				{charts.map((chartCard) => (
 					<AppLink key={chartCard.id} href={getRouteChartDetails(chartCard.id)}>
 						<ChartCard title={chartCard.name} description={chartCard.description} />
 					</AppLink>
 				))}
 			</div>
 
-			{isChartModal && <AddChartModal isOpen={isChartModal} onClose={onClose} onChange={onChange} />}
+			{isChartModal && <AddChartModal isOpen={isChartModal} onClose={onClose} onChange={onAddCharts} />}
 		</Page>
 	);
 };

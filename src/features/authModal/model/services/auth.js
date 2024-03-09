@@ -1,6 +1,6 @@
 import { $api } from "@/shared/api/api";
 
-export const auth = async ({ userName, userPassword, isLogin }) => {
+const auth = async ({ userName, userPassword, isLogin }) => {
 	const path = isLogin ? "/login/" : "/register/";
 
 	try {
@@ -16,3 +16,5 @@ export const auth = async ({ userName, userPassword, isLogin }) => {
 		return null;
 	}
 };
+
+export { auth };

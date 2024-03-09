@@ -36,7 +36,7 @@ export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) =>
 			userPassword: userPassword,
 			isLogin: isLogin,
 		});
-
+		
 		if (!data) return;
 
 		localStorage.setItem(USER_LOCALSTORAGE_KEY, data.username);

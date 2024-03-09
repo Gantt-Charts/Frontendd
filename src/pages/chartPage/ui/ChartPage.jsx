@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
 import { ChartDetails } from "@/entities/chartDetails";
 import { Page } from "@/widget/page";
-import styles from "./ChartPage.module.sass";
-import { $api } from "@/shared/api/api";
 import { AddChartDetailsModal } from "@/features/addChartDetailsModal";
 import { AuthDataContext } from "@/app/providers/AuthProvider";
+import styles from "./ChartPage.module.sass";
+import { addTask, deleteTask, editTask, getTask } from "../model/services/chart";
 
 export const ChartPage = () => {
 	const { id } = useParams();
@@ -17,20 +17,15 @@ export const ChartPage = () => {
 	const [isEdit, setIsEdit] = useState(false);
 
 	useEffect(() => {
-		$api
-			.get(`/projects/${authData}/${id}/tasks/`)
-			.then((res) => {
-				const data = res.data.map((data) => {
-					const result = {
-						...data,
-						start: new Date(data.start),
-						end: new Date(data.end),
-					};
-					return result;
-				});
+		const getData = async () => {
+			const data = await getTask({ authData, id });
 
-				return setData(data);
-			});
+			if (!data) return;
+
+			setData(data);
+		};
+
+		getData();
 	}, [authData, id]);
 
 	const onClose = () => {
@@ -47,56 +42,51 @@ export const ChartPage = () => {
 		onShow();
 	};
 
-	const onAddChange = (value) => {
-		const dataValue = {
-			...value,
-			project: id,
-		};
+	const onAddTask = useCallback(
+		async (value) => {
+			const dataValue = {
+				...value,
+				project: id,
+			};
 
+			const data = await addTask({ authData, id, value: dataValue });
 
-		$api
-			.post(`/projects/${authData}/${id}/tasks/`, dataValue)
-			.then((res) => {
-				const newData = {
-					...res.data,
-					start: new Date(res.data.start),
-					end: new Date(res.data.end),
-				};
-				setData((prevData) => [...prevData, newData]);
-			});
-	};
+			if (!data) return;
 
-	const onEditChange = (value) => {
-		const dataValue = {
-			...value,
-			project: id,
-		};
+			setData((prevData) => [...prevData, data]);
+		},
 
+		[authData, id]
+	);
 
-		$api
-			.put(`/projects/${authData}/${id}/tasks/${selectTask.id}/`, dataValue)
-			.then((res) => {
-				console.log(res.data);
-				const newData = {
-					...res.data,
-					start: new Date(res.data.start),
-					end: new Date(res.data.end),
-				};
-				// setData((prevData) => [...prevData, newData]);
-			});
-	};
+	const onEditTask = useCallback(
+		async (value) => {
+			const dataValue = {
+				...value,
+				project: id,
+			};
+
+			const data = await editTask({ authData, id, selectTaskId: selectTask.id, value: dataValue });
+
+			if (!data) return;
+
+			setData((prevData) => prevData.map((prev) => (prev.id === data.id ? { ...prev, ...data } : prev)));
+		},
+		[authData, id, selectTask.id]
+	);
 
 	const onSelect = (value) => {
 		setSelectTask(value);
 	};
 
-	const onDelete = () => {
-		$api
-			.delete(`/projects/${authData}/${id}/tasks/${selectTask.id}`)
-			.then(() => {
-				setData(data.filter((item) => item.id !== selectTask.id));
-			});
-	};
+	const onDeleteTask = useCallback(async () => {
+		const data = await deleteTask({ authData, id, selectTaskId: selectTask.id });
+
+		if (!data) return;
+
+		//Заменить на data.id
+		setData((prev) => prev.filter((item) => item.id !== selectTask.id));
+	}, [authData, id, selectTask.id]);
 
 	const dataIsNotEmpty = data.length > 0;
 
@@ -107,7 +97,7 @@ export const ChartPage = () => {
 				<div className={styles.actionBtn}>
 					<Button onClick={onShow}>Добавить</Button>
 					<Button onClick={onEdit}>Редактировать</Button>
-					<Button onClick={onDelete}>Удалить</Button>
+					<Button onClick={onDeleteTask}>Удалить</Button>
 				</div>
 			</div>
 
@@ -118,7 +108,7 @@ export const ChartPage = () => {
 					tasks={data}
 					isOpen={isChartDetailsModal}
 					onClose={onClose}
-					onChange={isEdit ? onEditChange : onAddChange}
+					onChange={isEdit ? onEditTask : onAddTask}
 					selectTask={isEdit && selectTask}
 				/>
 			)}
