@@ -1,1 +1,1 @@
-export { LoginModal } from "./ui/AddChartDetailsModal";
+export { AddChartDetailsModal } from "./ui/AddChartDetailsModal";

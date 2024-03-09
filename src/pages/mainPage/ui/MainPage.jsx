@@ -1,13 +1,15 @@
-import { Footer } from "@/widget/footer";
+import { Page } from "@/widget/page";
+import { SectionSteps } from "./sections/sectionSteps/SectionSteps";
+import { SectionUtility } from "./sections/sectionUtility/SectionUtility";
+import { SectionAdvantages } from "./sections/sectionAdvantages/SectionAdvantages";
 import styles from "./MainPage.module.sass";
 
 export const MainPage = () => {
 	return (
-		<main className={styles.mainPage}>
-			<div>
-				MainPage
-				<Footer />
-			</div>
-		</main>
+		<Page className={styles.mainPage} isPadding={false}>
+			<SectionSteps />
+			<SectionAdvantages />
+			<SectionUtility />
+		</Page>
 	);
 };

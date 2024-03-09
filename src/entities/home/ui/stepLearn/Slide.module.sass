@@ -1,0 +1,40 @@
+.slide
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 50px
+  width: 300px
+
+  .topBlock
+    position: relative
+    display: flex
+    justify-content: center
+    align-items: center
+    
+    &.circle
+      border: 6px solid var(--neutral500)
+      border-radius: 50%
+
+    &.square
+      border: 6px solid var(--neutral500)
+
+    .text
+      line-height: 100%
+      z-index: 10
+
+    .fillingBlock
+      position: absolute
+      bottom: 0
+      width: 100%
+      background-color: var(--progressGreen)
+
+  .textBlock
+    flex: 1
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100%
+    padding: 20px 30px
+    text-align: center
+    background-color: var(--secondary100)
+    border-radius: 20px

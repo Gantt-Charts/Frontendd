@@ -28,6 +28,7 @@ export default defineConfig({
 		alias: [{ find: "@", replacement: "/src" }],
 	},
 	define: {
-		__API__: JSON.stringify("http://localhost:8000"),
+		__BASE__:"/Frontendd/",
+		__API__: JSON.stringify("http://26.146.72.207:8000/"),
 	},
 });

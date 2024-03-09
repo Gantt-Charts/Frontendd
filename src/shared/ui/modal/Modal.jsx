@@ -1,6 +1,6 @@
 import { Portal } from "../portal/Portal";
 import { Overlay } from "../overlay/Overlay";
-import { useModal } from "@/shared/hooks/useModal";
+import { useModal } from "@/shared/lib/hooks/useModal";
 import cls from "classnames";
 import styles from "./Modal.module.sass";
 

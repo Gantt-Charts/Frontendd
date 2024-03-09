@@ -1,11 +1,43 @@
 .button
+  position: relative
+  display: block
   padding: 5px 10px
-  cursor: pointer
   font-size: 16px
-  background: none
-  border: none
   outline: none
   transition: opacity 0.125s
+  cursor: pointer
+
+  &::after
+    content: ""
+    position: absolute
+    left: 0
+    bottom: -2px
+    width: 100%
+    height: 2px
+    background-color: var(--accent100)
+    transform: scaleX(0)
+    transition: transform 0.3s ease
+
+  &.isSelected
+    &::after
+      transform: scaleX(1)
+
+  &.filled
+    border: 1px solid var(--primary100)
+    border-radius: 10px
+
+  &.clear
+    border: none
+    border-radius: 10px
+
+  &.primary
+    background-color: var(--bg200)
+
+  &.secondary
+    background-color: var(--secondary200)
+
+  &.transparent
+    background: none
 
   &:hover
     opacity: var(--hover-opacity)

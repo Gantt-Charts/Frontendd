@@ -24,11 +24,11 @@ export const AddChartModal = ({ isOpen, onClose, className, onChange }) => {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} className={cls("", className)}>
-			<h1>Форма добавления диаграммы</h1>
+			<h2>Форма добавления диаграммы</h2>
 			<div className={styles.chartForm}>
 				<Input type="text" onChange={onChangeName} value={name} placeholder={"Введите название"} />
 				<Input type="text" onChange={onChangeDescription} value={description} placeholder={"Введите описание"} />
-				<Button className={styles.addBtn} onClick={onAddClick}>
+				<Button variant="filled" color="primary" className={styles.addBtn} onClick={onAddClick}>
 					Добавить
 				</Button>
 			</div>
