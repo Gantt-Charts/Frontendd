@@ -62,7 +62,7 @@ export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) =>
 
 			<div className={styles.authForm}>
 				<Input type="text" onChange={onChangeUsername} value={userName} placeholder={"Введите логин"} />
-				<Input type="text" onChange={onChangePassword} value={userPassword} placeholder={"Введите пароль"} />
+				<Input type="password" onChange={onChangePassword} value={userPassword} placeholder={"Введите пароль"}/>
 				<Button color="primary" className={styles.authBtn} onClick={onAuthClick}>
 					{buttonValue}
 				</Button>

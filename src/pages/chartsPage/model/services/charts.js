@@ -14,7 +14,7 @@ const getCharts = async ({ authData }) => {
 
 const addCharts = async ({ authData, value }) => {
 	try {
-		const response = await $api.post(`$/projects/${authData}/`, value);
+		const response = await $api.post(`/projects/${authData}/`, value);
 
 		return response.data;
 	} catch (error) {

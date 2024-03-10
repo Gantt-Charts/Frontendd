@@ -52,7 +52,7 @@ const deleteTask = async ({ authData, id, selectTaskId }) => {
 	try {
 		const response = await $api.delete(`/projects/${authData}/${id}/tasks/${selectTaskId}`);
 
-		return response.data;
+		return response.data || selectTaskId;
 	} catch (error) {
 		console.log(error);
 

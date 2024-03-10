@@ -16,30 +16,24 @@ export const ChartPage = () => {
 	const [selectTask, setSelectTask] = useState({});
 	const [isEdit, setIsEdit] = useState(false);
 
-	useEffect(() => {
-		const getData = async () => {
-			const data = await getTask({ authData, id });
-
-			if (!data) return;
-
-			setData(data);
-		};
-
-		getData();
-	}, [authData, id]);
-
-	const onClose = () => {
-		setIsChartDetailsModal(false);
-		setIsEdit(false);
-	};
-
 	const onShow = () => {
 		setIsChartDetailsModal(true);
 	};
 
 	const onEdit = () => {
+		if (!selectTask.id) return;
+
 		setIsEdit(true);
 		onShow();
+	};
+
+	const onSelect = (value) => {
+		setSelectTask(value);
+	};
+
+	const onClose = () => {
+		setIsChartDetailsModal(false);
+		setIsEdit(false);
 	};
 
 	const onAddTask = useCallback(
@@ -61,6 +55,8 @@ export const ChartPage = () => {
 
 	const onEditTask = useCallback(
 		async (value) => {
+			console.log(selectTask?.id);
+
 			const dataValue = {
 				...value,
 				project: id,
@@ -75,18 +71,27 @@ export const ChartPage = () => {
 		[authData, id, selectTask.id]
 	);
 
-	const onSelect = (value) => {
-		setSelectTask(value);
-	};
-
 	const onDeleteTask = useCallback(async () => {
+		if (!selectTask.id) return;
 		const data = await deleteTask({ authData, id, selectTaskId: selectTask.id });
 
 		if (!data) return;
 
 		//Заменить на data.id
-		setData((prev) => prev.filter((item) => item.id !== selectTask.id));
+		setData((prev) => prev.filter((item) => item.id !== data));
 	}, [authData, id, selectTask.id]);
+
+	useEffect(() => {
+		const getData = async () => {
+			const data = await getTask({ authData, id });
+
+			if (!data) return;
+
+			setData(data);
+		};
+
+		getData();
+	}, [authData, id]);
 
 	const dataIsNotEmpty = data.length > 0;
 
@@ -110,6 +115,7 @@ export const ChartPage = () => {
 					onClose={onClose}
 					onChange={isEdit ? onEditTask : onAddTask}
 					selectTask={isEdit && selectTask}
+					isEdit={isEdit}
 				/>
 			)}
 		</Page>

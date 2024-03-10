@@ -33,7 +33,7 @@ const disableItems = [
 	},
 ];
 
-export const AddChartDetailsModal = ({ firstTask, tasks, selectTask, isOpen, onClose, onChange, className }) => {
+export const AddChartDetailsModal = ({ firstTask, tasks, selectTask, isOpen, isEdit, onClose, onChange, className }) => {
 	const [name, setName] = useState("");
 	const [type, setType] = useState(typeItems[0]);
 	const [start, setStart] = useState("");
@@ -135,6 +135,8 @@ export const AddChartDetailsModal = ({ firstTask, tasks, selectTask, isOpen, onC
 
 	// console.log(dependencies);
 
+	const btnText = isEdit ? "Редактировать" : "Добавить";
+
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} className={cls("", className)}>
 			<h1 className={styles.title}>Форма добавления задачи</h1>
@@ -170,7 +172,7 @@ export const AddChartDetailsModal = ({ firstTask, tasks, selectTask, isOpen, onC
 				</div>
 
 				<Button className={styles.loginBtn} onClick={onAddClick}>
-					Добавить
+					{btnText}
 				</Button>
 			</div>
 		</Modal>
