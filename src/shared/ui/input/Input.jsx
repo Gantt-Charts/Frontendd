@@ -1,7 +1,9 @@
 import cls from "classnames";
 import styles from "./Input.module.sass";
 
-export const Input = ({ type = "text", label, value = "", onChange, className, placeholder, otherProps }) => {
+export const Input = ({ type = "text", label, value = "", onChange, className, placeholder, ...otherProps }) => {
+	const additionalClass = label ? "" : className;
+
 	const onChangeHandle = (e) => {
 		onChange?.(e.target.value);
 	};
@@ -12,7 +14,7 @@ export const Input = ({ type = "text", label, value = "", onChange, className, p
 			value={value}
 			onChange={onChangeHandle}
 			placeholder={placeholder}
-			className={cls(styles.input, className)}
+			className={cls(styles.input, additionalClass)}
 			{...otherProps}
 		/>
 	);

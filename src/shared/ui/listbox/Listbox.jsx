@@ -4,7 +4,7 @@ import cls from "classnames";
 import styles from "./Listbox.module.sass";
 import ArrowSVG from "../../assets/icons/arrow.svg";
 
-export const Listbox = ({ items, className, value, onChange }) => {
+export const Listbox = ({ label, items, className, value, onChange }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const ref = useRef();
 
@@ -31,8 +31,10 @@ export const Listbox = ({ items, className, value, onChange }) => {
 		};
 	}, []);
 
-	return (
-		<div ref={ref} className={cls(styles.listbox, { [styles.isOpen]: isOpen }, className)}>
+	const additionalClass = label ? "" : className;
+
+	const listBox = (
+		<div ref={ref} className={cls(styles.listbox, { [styles.isOpen]: isOpen }, additionalClass)}>
 			<button onClick={onOpen} className={styles.trigger}>
 				<span className={styles.title}>{value.content}</span>
 				<AppIcon Svg={ArrowSVG} color="secondary" className={styles.icon} />
@@ -49,4 +51,15 @@ export const Listbox = ({ items, className, value, onChange }) => {
 			)}
 		</div>
 	);
+
+	if (label) {
+		return (
+			<div className={styles.listBoxWrapper}>
+				<span className={styles.label}>{label}</span>
+				{listBox}
+			</div>
+		);
+	}
+
+	return listBox;
 };

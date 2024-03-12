@@ -16,5 +16,6 @@ export const LogoutBtn = () => {
 		navigate(getRouteMain());
 		localStorage.setItem(PAGE_LOCALSTORAGE_SELECT, "Главная");
 	};
+
 	return <Button onClick={onLogout}>Выйти</Button>;
 };

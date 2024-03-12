@@ -7,11 +7,14 @@ import { auth } from "../model/services/auth";
 import cls from "classnames";
 import styles from "./AuthModal.module.sass";
 import { USER_LOCALSTORAGE_KEY, USER_LOCALSTORAGE_TOKEN } from "@/shared/const/localstorage";
+import { ValidationError } from "@/entities/validationError";
+import { validateFields } from "@/shared/lib/helpers/validateFields";
 
 export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) => {
 	const [isLogin, setIsLogin] = useState(isLoginForm);
 	const [userName, setUserName] = useState("");
 	const [userPassword, setUserPassword] = useState("");
+	const [isValidationError, setIsValidationError] = useState(false);
 	const { setAuthData } = useContext(AuthDataContext);
 
 	const onChangeFormLogin = useCallback(() => {
@@ -31,12 +34,18 @@ export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) =>
 	}, []);
 
 	const onAuthClick = async () => {
+		const isValidate = validateFields([userName, userPassword]);
+
+		setIsValidationError(!isValidate);
+
+		if (!isValidate) return;
+
 		const data = await auth({
 			userName: userName,
 			userPassword: userPassword,
 			isLogin: isLogin,
 		});
-		
+
 		if (!data) return;
 
 		localStorage.setItem(USER_LOCALSTORAGE_KEY, data.username);
@@ -51,6 +60,7 @@ export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) =>
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} className={cls("", className)}>
 			<h1>{title}</h1>
+			<ValidationError isValidationError={isValidationError} text="Заполните все поля!" />
 			<div className={styles.buttonWrapper}>
 				<Button color="primary" isSelected={isLogin} onClick={onChangeFormLogin} className={styles.btn}>
 					Вход
@@ -62,7 +72,7 @@ export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) =>
 
 			<div className={styles.authForm}>
 				<Input type="text" onChange={onChangeUsername} value={userName} placeholder={"Введите логин"} />
-				<Input type="password" onChange={onChangePassword} value={userPassword} placeholder={"Введите пароль"}/>
+				<Input type="password" onChange={onChangePassword} value={userPassword} placeholder={"Введите пароль"} />
 				<Button color="primary" className={styles.authBtn} onClick={onAuthClick}>
 					{buttonValue}
 				</Button>

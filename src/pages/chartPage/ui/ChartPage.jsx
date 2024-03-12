@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
 import { ChartDetails } from "@/entities/chartDetails";
 import { Page } from "@/widget/page";
-import { AddChartDetailsModal } from "@/features/addChartDetailsModal";
+import { ModificationTaskModal } from "@/features/modificationTaskModal";
 import { AuthDataContext } from "@/app/providers/AuthProvider";
+import { addTask, deleteTask, editTask, getTask } from "../model/services/tasks";
 import styles from "./ChartPage.module.sass";
-import { addTask, deleteTask, editTask, getTask } from "../model/services/chart";
+import { ModificationChart } from "@/features/modificationChart";
 
 export const ChartPage = () => {
 	const { id } = useParams();
@@ -31,6 +32,12 @@ export const ChartPage = () => {
 		setSelectTask(value);
 	};
 
+	const onDirectChange = (value) => {
+		setSelectTask(value);
+
+		onEditTask(value);
+	};
+
 	const onClose = () => {
 		setIsChartDetailsModal(false);
 		setIsEdit(false);
@@ -48,27 +55,26 @@ export const ChartPage = () => {
 			if (!data) return;
 
 			setData((prevData) => [...prevData, data]);
+			onClose();
 		},
-
 		[authData, id]
 	);
 
 	const onEditTask = useCallback(
 		async (value) => {
-			console.log(selectTask?.id);
-
 			const dataValue = {
 				...value,
 				project: id,
 			};
 
-			const data = await editTask({ authData, id, selectTaskId: selectTask.id, value: dataValue });
+			const data = await editTask({ authData, id, selectTaskId: dataValue.id, value: dataValue });
 
 			if (!data) return;
 
 			setData((prevData) => prevData.map((prev) => (prev.id === data.id ? { ...prev, ...data } : prev)));
+			onClose();
 		},
-		[authData, id, selectTask.id]
+		[authData, id]
 	);
 
 	const onDeleteTask = useCallback(async () => {
@@ -77,7 +83,6 @@ export const ChartPage = () => {
 
 		if (!data) return;
 
-		//Заменить на data.id
 		setData((prev) => prev.filter((item) => item.id !== data));
 	}, [authData, id, selectTask.id]);
 
@@ -93,31 +98,37 @@ export const ChartPage = () => {
 		getData();
 	}, [authData, id]);
 
-	const dataIsNotEmpty = data.length > 0;
+	const dataIsEmpty = data.length;
+	const labelText = isEdit ? "Форма редактирования задачи" : "Форма добавления задачи";
+	const btnText = isEdit ? "Редактировать" : "Добавить";
 
 	return (
 		<Page className={styles.chartPage}>
-			<div className={styles.header}>
-				<h2 className={styles.username}>{authData}</h2>
-				<div className={styles.actionBtn}>
-					<Button onClick={onShow}>Добавить</Button>
-					<Button onClick={onEdit}>Редактировать</Button>
-					<Button onClick={onDeleteTask}>Удалить</Button>
+			<ModificationChart id={id}/>
+			<div className={styles.tasks}>
+				<div className={styles.header}>
+					<h2 className={styles.username}>{authData}</h2>
+					<div className={styles.actionBtn}>
+						<Button onClick={onShow}>Добавить</Button>
+						<Button onClick={onEdit}>Редактировать</Button>
+						<Button onClick={onDeleteTask}>Удалить</Button>
+					</div>
 				</div>
-			</div>
 
-			{dataIsNotEmpty ? <ChartDetails data={data} onSelect={onSelect} /> : null}
-			{isChartDetailsModal && (
-				<AddChartDetailsModal
-					firstTask={!dataIsNotEmpty}
-					tasks={data}
-					isOpen={isChartDetailsModal}
-					onClose={onClose}
-					onChange={isEdit ? onEditTask : onAddTask}
-					selectTask={isEdit && selectTask}
-					isEdit={isEdit}
-				/>
-			)}
+				{dataIsEmpty ? <ChartDetails data={data} onSelect={onSelect} onChange={onDirectChange} /> : null}
+				{isChartDetailsModal && (
+					<ModificationTaskModal
+						firstTask={!dataIsEmpty}
+						tasks={data}
+						isOpen={isChartDetailsModal}
+						onClose={onClose}
+						onChange={isEdit ? onEditTask : onAddTask}
+						selectTask={isEdit && selectTask}
+						label={labelText}
+						btnText={btnText}
+					/>
+				)}
+			</div>
 		</Page>
 	);
 };

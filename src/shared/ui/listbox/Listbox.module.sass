@@ -1,6 +1,9 @@
+.listBoxWrapper
+  .label
+    margin-bottom: 5px
+
 .listbox
   position: relative
-  width: max-content
 
   .trigger
     display: flex
@@ -23,7 +26,7 @@
     right: 0
     background-color: #fff
     border: 1px solid var(--neutral200)
-    z-index: 1
+    z-index: var(--listbox-z-index)
 
     .item
       width: 100%

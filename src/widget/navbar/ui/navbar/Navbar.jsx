@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { PAGE_LOCALSTORAGE_SELECT } from "@/shared/const/localstorage";
 import { LogoutBtn } from "@/features/logoutBtn";
 import { AuthBtn } from "@/features/authBtn";
@@ -11,7 +11,6 @@ import { AuthDataContext } from "@/app/providers/AuthProvider";
 export const Navbar = ({ className }) => {
 	const [selectNavItem, setSelectNavItem] = useState("");
 	const { authData } = useContext(AuthDataContext);
-	const localstorageSelect = localStorage.getItem(PAGE_LOCALSTORAGE_SELECT);
 
 	const onSelectNavItem = (value) => () => {
 		setSelectNavItem(value);
@@ -19,8 +18,8 @@ export const Navbar = ({ className }) => {
 	};
 
 	useEffect(() => {
-		setSelectNavItem(localstorageSelect || navbarItems[0].value);
-	}, [localstorageSelect]);
+		setSelectNavItem(localStorage.getItem(PAGE_LOCALSTORAGE_SELECT) || navbarItems[0].value);
+	}, [authData]);
 
 	return (
 		<header className={cls(styles.navbar, className)}>

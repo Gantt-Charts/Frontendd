@@ -1,0 +1,51 @@
+.modificationChart
+  display: flex
+  flex-direction: column
+  gap: 30px
+  position: fixed
+  left: 0
+  bottom: 5px
+  height: 75%
+  max-width: 350px
+  width: 100%
+  padding: 40px 20px 20px
+  background-color: var(--bg200)
+  transform: translateX(-100%)
+  transition: transform 0.3s ease-in
+  z-index: var(--modif-chart-z-index)
+
+  &.opened
+    transform: translateX(0)
+
+  .chart
+    display: flex
+    flex-direction: column
+    gap: 20px
+
+  .btns
+    display: flex
+    flex-direction: column
+    gap: 10px
+    margin-top: auto
+
+    .editBtn,.deleteBtn
+      width: 100%
+
+  .openBtn
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: 10px
+    position: absolute
+    top: 0
+    left: 100%
+    height: 100%
+    border-radius: 20px 0 0 20px
+    writing-mode: vertical-rl
+    transform: rotate(180deg)
+
+    .icon
+      transform: rotateZ(90deg)
+
+    .icon.isOpen
+      transform: rotateZ(-90deg)

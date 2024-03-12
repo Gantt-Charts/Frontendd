@@ -26,7 +26,10 @@ export const ChartsPage = () => {
 		async (value) => {
 			const data = await addCharts({ authData, value });
 
+			if (!data) return;
+
 			setCharts((prevData) => [...prevData, data]);
+			onClose();
 		},
 		[authData]
 	);

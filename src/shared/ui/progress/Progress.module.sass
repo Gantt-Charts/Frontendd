@@ -1,8 +1,11 @@
+.progressWrapper
+  .label
+
 .progress
   position: relative
   background-color: var(--neutral500)
   height: 1px
-  margin-top: 15px
+  margin: 40px 0 10px
 
   .min
     position: absolute
@@ -30,15 +33,14 @@
       padding-bottom: 5px
       transform: translateX(-50%)
 
-  .circle
+  .value
     position: absolute
     top: 50%
     transform: translateY(-50%)
-    height: 20px
     width: 40px
     text-align: center
     color: var(--neutral200)
     background-color: var(--primary100)
     border: 1px solid var(--neutral500)
     cursor: pointer
-    z-index: 100
+    z-index: var(--progress-z-index)
