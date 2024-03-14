@@ -16,11 +16,11 @@ export const routeConfig = createBrowserRouter(
 				},
 				{
 					element: <ChartsPage />,
-					path: getRouteCharts(),
+					path: getRouteCharts(":username"),
 				},
 				{
 					element: <ChartPage />,
-					path: getRouteChartDetails(":id"),
+					path: getRouteChartDetails(":username", ":id"),
 				},
 			],
 			errorElement: <div>Страница не найдена</div>,

@@ -1,19 +1,19 @@
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { PAGE_LOCALSTORAGE_SELECT, USER_LOCALSTORAGE_KEY, USER_LOCALSTORAGE_TOKEN } from "@/shared/const/localstorage";
+import { PAGE_LOCALSTORAGE_SELECT } from "@/shared/const/localstorage";
 import { Button } from "@/shared/ui/button/Button";
 import { getRouteMain } from "@/shared/const/routes";
-import { AuthDataContext } from "@/app/providers/AuthProvider";
+import { useDispatch } from "react-redux";
+import { userActions } from "@/entities/user/model/slice/userSlice";
 
 export const LogoutBtn = () => {
-	const { setAuthData } = useContext(AuthDataContext);
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const onLogout = () => {
-		setAuthData("");
-		localStorage.removeItem(USER_LOCALSTORAGE_KEY);
-		localStorage.removeItem(USER_LOCALSTORAGE_TOKEN);
+		dispatch(userActions.logout());
 		navigate(getRouteMain());
+
+		//Переделать доступ к страницам
 		localStorage.setItem(PAGE_LOCALSTORAGE_SELECT, "Главная");
 	};
 

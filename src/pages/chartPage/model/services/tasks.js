@@ -1,18 +1,10 @@
 import { $api } from "@/shared/api/api";
 
-const convertData = (data) => ({
-	...data,
-	start: new Date(data.start),
-	end: new Date(data.end),
-});
-
-const getTask = async ({ authData, id }) => {
+const getTask = async ({ username, id }) => {
 	try {
-		const response = await $api.get(`/projects/${authData}/${id}/tasks/`);
+		const response = await $api.get(`/projects/${username}/${id}/tasks/`);
 
-		const data = response.data.map((data) => convertData(data));
-
-		return data;
+		return response.data;
 	} catch (error) {
 		console.log(error);
 
@@ -20,13 +12,11 @@ const getTask = async ({ authData, id }) => {
 	}
 };
 
-const addTask = async ({ authData, id, value }) => {
+const postTask = async ({ username, id, value }) => {
 	try {
-		const response = await $api.post(`/projects/${authData}/${id}/tasks/`, value);
+		const response = await $api.post(`/projects/${username}/${id}/tasks/`, value);
 
-		const data = convertData(response.data);
-
-		return data;
+		return response.data;
 	} catch (error) {
 		console.log(error);
 
@@ -34,13 +24,11 @@ const addTask = async ({ authData, id, value }) => {
 	}
 };
 
-const editTask = async ({ authData, id, selectTaskId, value }) => {
+const putTask = async ({ username, id, selectTaskId, value }) => {
 	try {
-		const response = await $api.put(`/projects/${authData}/${id}/tasks/${selectTaskId}/`, value);
+		const response = await $api.put(`/projects/${username}/${id}/tasks/${selectTaskId}/`, value);
 
-		const data = convertData(response.data);
-
-		return data;
+		return response.data;
 	} catch (error) {
 		console.log(error);
 
@@ -48,9 +36,9 @@ const editTask = async ({ authData, id, selectTaskId, value }) => {
 	}
 };
 
-const deleteTask = async ({ authData, id, selectTaskId }) => {
+const deleteTask = async ({ username, id, selectTaskId }) => {
 	try {
-		const response = await $api.delete(`/projects/${authData}/${id}/tasks/${selectTaskId}`);
+		const response = await $api.delete(`/projects/${username}/${id}/tasks/${selectTaskId}`);
 
 		return response.data || selectTaskId;
 	} catch (error) {
@@ -60,4 +48,4 @@ const deleteTask = async ({ authData, id, selectTaskId }) => {
 	}
 };
 
-export { getTask, addTask, editTask, deleteTask };
+export { getTask, postTask, putTask, deleteTask };

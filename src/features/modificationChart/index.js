@@ -1,1 +1,2 @@
-export { ModificationChart } from "./ui/ModificationChart";
+export { EditDeleteChartForm } from "./ui/editDeleteChartForm/EditDeleteChartForm";
+export { AddChartModal } from "./ui/addChartModal/AddChartModal";

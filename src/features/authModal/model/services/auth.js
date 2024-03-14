@@ -8,7 +8,7 @@ const auth = async ({ userName, userPassword, isLogin }) => {
 			username: userName,
 			password: userPassword,
 		});
-
+		
 		return response.data;
 	} catch (error) {
 		console.log(error);

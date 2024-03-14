@@ -1,3 +1,3 @@
 export const getRouteMain = () => "/";
-export const getRouteCharts = () => "/charts";
-export const getRouteChartDetails = (id) => `/charts/${id}`;
+export const getRouteCharts = (username) => `/${username}/charts`;
+export const getRouteChartDetails = (username, id) => `/${username}/charts/${id}`;

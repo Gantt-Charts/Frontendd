@@ -1,21 +1,24 @@
-import { useCallback, useContext, useState } from "react";
-import { AuthDataContext } from "@/app/providers/AuthProvider";
+import { useCallback, useState } from "react";
 import { Modal } from "@/shared/ui/modal/Modal";
 import { Button } from "@/shared/ui/button/Button";
 import { Input } from "@/shared/ui/input/Input";
 import { auth } from "../model/services/auth";
 import cls from "classnames";
 import styles from "./AuthModal.module.sass";
-import { USER_LOCALSTORAGE_KEY, USER_LOCALSTORAGE_TOKEN } from "@/shared/const/localstorage";
 import { ValidationError } from "@/entities/validationError";
 import { validateFields } from "@/shared/lib/helpers/validateFields";
+import { useDispatch, useSelector } from "react-redux";
+import { loginActions } from "../model/slice/loginSlice";
+import { getLoginUsername, getLoginPassword } from "../model/selectors/authModalSelectors";
+import { userActions } from "@/entities/user/model/slice/userSlice";
 
 export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) => {
 	const [isLogin, setIsLogin] = useState(isLoginForm);
-	const [userName, setUserName] = useState("");
-	const [userPassword, setUserPassword] = useState("");
 	const [isValidationError, setIsValidationError] = useState(false);
-	const { setAuthData } = useContext(AuthDataContext);
+	const username = useSelector(getLoginUsername);
+	const password = useSelector(getLoginPassword);
+
+	const dispatch = useDispatch();
 
 	const onChangeFormLogin = useCallback(() => {
 		setIsLogin(true);
@@ -25,32 +28,36 @@ export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) =>
 		setIsLogin(false);
 	}, []);
 
-	const onChangeUsername = useCallback((value) => {
-		setUserName(value);
-	}, []);
+	const onChangeUsername = useCallback(
+		(value) => {
+			dispatch(loginActions.setUsername(value));
+		},
+		[dispatch]
+	);
 
-	const onChangePassword = useCallback((value) => {
-		setUserPassword(value);
-	}, []);
+	const onChangePassword = useCallback(
+		(value) => {
+			dispatch(loginActions.setPassword(value));
+		},
+		[dispatch]
+	);
 
 	const onAuthClick = async () => {
-		const isValidate = validateFields([userName, userPassword]);
+		const isValidate = validateFields([username, password]);
 
 		setIsValidationError(!isValidate);
 
 		if (!isValidate) return;
 
 		const data = await auth({
-			userName: userName,
-			userPassword: userPassword,
+			userName: username,
+			userPassword: password,
 			isLogin: isLogin,
 		});
 
 		if (!data) return;
 
-		localStorage.setItem(USER_LOCALSTORAGE_KEY, data.username);
-		localStorage.setItem(USER_LOCALSTORAGE_TOKEN, data.token);
-		setAuthData(data.username);
+		dispatch(userActions.setAuthData(data));
 		onClose();
 	};
 
@@ -71,8 +78,8 @@ export const AuthModal = ({ isLoginForm = true, isOpen, onClose, className }) =>
 			</div>
 
 			<div className={styles.authForm}>
-				<Input type="text" onChange={onChangeUsername} value={userName} placeholder={"Введите логин"} />
-				<Input type="password" onChange={onChangePassword} value={userPassword} placeholder={"Введите пароль"} />
+				<Input type="text" onChange={onChangeUsername} value={username} placeholder={"Введите логин"} />
+				<Input type="password" onChange={onChangePassword} value={password} placeholder={"Введите пароль"} />
 				<Button color="primary" className={styles.authBtn} onClick={onAuthClick}>
 					{buttonValue}
 				</Button>

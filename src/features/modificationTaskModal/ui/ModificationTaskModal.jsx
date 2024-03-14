@@ -8,6 +8,9 @@ import { Listbox } from "@/shared/ui/listbox/Listbox";
 import { Progress } from "@/shared/ui/progress/Progress";
 import { ValidationError } from "@/entities/validationError";
 import { validateFields } from "@/shared/lib/helpers/validateFields";
+import { getAllTasks } from "@/pages/chartPage/model/selectors/chartPageSelectors";
+import { useSelector } from "react-redux";
+import { useTaskChange } from "@/pages/chartPage/lib/hooks/useTaskChange";
 
 const typeItems = [
 	{
@@ -35,7 +38,8 @@ const disableItems = [
 	},
 ];
 
-export const ModificationTaskModal = ({ label, btnText, firstTask, tasks, selectTask, isOpen, onClose, onChange, className }) => {
+export const ModificationTaskModal = ({ label, btnText, firstTask, selectTask, isOpen, isEdit, onClose, className }) => {
+	const tasks = useSelector(getAllTasks);
 	const [id, setId] = useState("");
 	const [name, setName] = useState("");
 	const [type, setType] = useState(typeItems[0]);
@@ -48,6 +52,8 @@ export const ModificationTaskModal = ({ label, btnText, firstTask, tasks, select
 
 	const typeItemsRef = firstTask ? [typeItems[0]] : typeItems;
 	const dependenciesItemsRef = useRef([]);
+
+	const { onAddTask, onEditTask } = useTaskChange();
 
 	const onChangeName = useCallback((value) => {
 		setName(value);
@@ -78,26 +84,25 @@ export const ModificationTaskModal = ({ label, btnText, firstTask, tasks, select
 	}, []);
 
 	const onClick = useCallback(() => {
-		const typeValue = type.value;
-		const isDisabledValue = isDisabled.value;
-
 		const isValidate = validateFields([name, start, end]);
 
 		setIsValidationError(!isValidate);
 
 		if (!isValidate) return;
 
-		onChange({
+		const taskData = {
 			id,
 			name,
-			type: typeValue,
+			type: type.value,
 			start,
 			end,
 			progress,
 			dependencies: dependencies.id === -1 ? [] : [dependencies.id],
-			isDisabled: isDisabledValue,
-		});
-	}, [type.value, isDisabled.value, name, start, end, onChange, id, progress, dependencies.id]);
+			isDisabled: isDisabled.value,
+		};
+
+		!isEdit ? onAddTask(taskData, onClose) : onEditTask(taskData, onClose);
+	}, [name, start, end, id, type.value, progress, dependencies.id, isDisabled.value, isEdit, onAddTask, onClose, onEditTask]);
 
 	useEffect(() => {
 		const allTasks = tasks.map((task) => ({
