@@ -44,7 +44,7 @@ export const SectionAdvantages = () => {
 	return (
 		<SectionContainer title="Преимущества использования диаграмм Ганта">
 			<div className={styles.advantagesWrapper}>
-				<AppImage src={`/main/advantages2.jpg`} className={styles.img} />
+				<AppImage src={`./main/advantages2.jpg`} className={styles.img} />
 				<ul className={styles.advantages}>
 					{advantagesItems.map((item, index) => (
 						<li key={index} className={styles.text}>

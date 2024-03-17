@@ -2,7 +2,6 @@
 	"name": "gantt",
 	"private": true,
 	"version": "0.0.1",
-	"homepage": "https://Gantt-Charts.github.io/Frontendd/",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",

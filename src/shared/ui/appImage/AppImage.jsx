@@ -20,8 +20,6 @@ export const AppImage = ({ src, maxHeight, alt = "image", signature, fallback, e
 	const [isLoading, setIsLoading] = useState(true);
 	const [hasError, setHasError] = useState(false);
 
-	src = __BASE__ + src;
-
 	useLayoutEffect(() => {
 		const img = new Image();
 

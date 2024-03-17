@@ -8,7 +8,7 @@ export default {
 
 export const Image = {
 	args: {
-		src: "/catalog/product-1.jpg",
+		src: "./catalog/product-1.jpg",
 		signature: "Loft Space",
 	},
 };

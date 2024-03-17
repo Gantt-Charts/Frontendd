@@ -6,3 +6,18 @@ Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Архитектура проекта
+
+Проект написан в соответствии с методологией Feature sliced design
+
+## Работа с данными
+
+Взаимодействие с данными осуществляется с помощью redux toolkit.
+
+Запросы на сервер отправляются с помощью Axios.
+
+Сервер разрабатывался другим разработчиком, на хостинг разместить не получилось.
+
+## Ссылка на gh-pages 
+https://canyonz.github.io/Gantt-Charts/
